@@ -1,0 +1,18 @@
+# Programa exemplo no escopo reduzido
+chart = 10
+streams = 100.5
+nome = "Diva"
+i = 0
+
+peak = ((chart + 4) * (6 - 2) / 2 + 15 - 3) * 2 / 4
+
+lacrou peak > 20:
+    flash(nome, "chegou ao pico!", peak)
+gag:
+    flash(nome, "ainda nao chegou ao pico.")
+
+babado i na turne(5):
+    flash("Repeticao:", i)
+
+total = streams + peak
+flash("Total de streams:", total)
