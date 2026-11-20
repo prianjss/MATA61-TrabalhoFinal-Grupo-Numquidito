@@ -1,0 +1,7 @@
+# Linhas vazias e comentarios no meio do bloco nao alteram o recuo
+lacrou x:
+    flash(1)
+
+# comentario na coluna 0
+        # comentario mais indentado
+    flash(2)

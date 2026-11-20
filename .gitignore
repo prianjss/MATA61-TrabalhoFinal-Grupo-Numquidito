@@ -6,6 +6,3 @@ parser.tab.c
 parser.tab.h
 parser.output
 *.o
-
-# Arquivos temporarios do teste CRLF
-testes/*.crlf.tmp

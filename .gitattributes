@@ -4,3 +4,6 @@
 * text=auto eol=lf
 
 *.pdf binary
+
+# Caso de teste que depende de um '\r' isolado: nao pode ser normalizado
+testes/invalidos/lexicos/R_cr_isolado.diva -text

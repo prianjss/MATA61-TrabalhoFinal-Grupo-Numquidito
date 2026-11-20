@@ -1,0 +1,6 @@
+# gag logo apos fechar dois niveis
+lacrou a:
+    lacrou b:
+        flash(1)
+gag:
+    flash(2)

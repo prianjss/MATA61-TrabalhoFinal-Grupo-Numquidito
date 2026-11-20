@@ -1,0 +1,9 @@
+# Especificacao 4.1 - lacrou/gag aninhados
+nota = 6
+lacrou nota >= 7:
+    flash("Aprovada, diva!")
+gag:
+    lacrou nota >= 5:
+        flash("Recuperacao")
+    gag:
+        flash("Flopou")

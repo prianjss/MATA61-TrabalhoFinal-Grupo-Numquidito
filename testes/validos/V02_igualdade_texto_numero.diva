@@ -1,0 +1,2 @@
+# V02 - Igualdade entre texto e numero
+flash(5 == "5")

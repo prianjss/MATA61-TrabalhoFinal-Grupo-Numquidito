@@ -1,0 +1,3 @@
+# Parentese aberto sem fechamento
+# ESPERADO: Erro sintatico na linha 3 (proximo ao fim da linha)
+x = (1 + 2

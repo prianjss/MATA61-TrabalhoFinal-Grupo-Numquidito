@@ -1,0 +1,6 @@
+# Strings com aspas simples e duplas
+a = "Diva"
+b = 'Lang'
+c = "it's"
+d = '"ok"'
+vazia = ""

@@ -1,0 +1,3 @@
+# Arquivo termina logo apos os dois-pontos
+# ESPERADO: Erro sintatico na linha 3 (proximo ao fim do arquivo)
+lacrou x:

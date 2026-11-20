@@ -1,0 +1,5 @@
+# L02 - Recuo que nao corresponde a nenhum nivel da pilha
+# ESPERADO: Erro lexico na linha 5: recuo nao corresponde a nenhum nivel anterior
+lacrou real:
+    flash("um")
+  flash("dois")

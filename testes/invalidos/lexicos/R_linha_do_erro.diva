@@ -1,0 +1,5 @@
+# O erro deve apontar a linha correta
+# ESPERADO: Erro lexico na linha 5: caractere invalido ('@')
+x = 1
+y = 2
+z = 3 @ 4

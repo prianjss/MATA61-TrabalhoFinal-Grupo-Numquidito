@@ -1,0 +1,3 @@
+# L06 (caso A) - Real sem digitos depois do ponto
+# ESPERADO: Erro lexico na linha 3: numero decimal malformado (faltam digitos apos o ponto)
+x = 5.

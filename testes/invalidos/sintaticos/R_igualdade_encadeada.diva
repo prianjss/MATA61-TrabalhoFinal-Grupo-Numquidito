@@ -1,0 +1,3 @@
+# Igualdade encadeada tambem e erro
+# ESPERADO: Erro sintatico na linha 3 (proximo a '==')
+x = 1 == 2 == 3

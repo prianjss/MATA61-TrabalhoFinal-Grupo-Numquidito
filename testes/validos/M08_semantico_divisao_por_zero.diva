@@ -1,0 +1,2 @@
+# Erro SEMANTICO (detectado so na M3): sintaticamente valido, aceito na M2
+flash(10 / 0)

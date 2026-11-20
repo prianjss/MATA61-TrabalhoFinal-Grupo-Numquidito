@@ -1,0 +1,2 @@
+# V03 - Comparacao de ordem entre inteiro e real
+flash(3 < 5.0)

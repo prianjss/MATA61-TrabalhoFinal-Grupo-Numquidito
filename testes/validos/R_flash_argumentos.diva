@@ -1,0 +1,4 @@
+# flash com zero, um e varios argumentos
+flash()
+flash(1)
+flash(1, "dois", 3.0, x)

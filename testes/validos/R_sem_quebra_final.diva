@@ -1,0 +1,3 @@
+# Ultima linha sem quebra de linha
+x = 1
+flash(x)

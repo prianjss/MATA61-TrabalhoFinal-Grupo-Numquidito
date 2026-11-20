@@ -1,0 +1,3 @@
+# Primeira linha de codigo indentada
+# ESPERADO: Erro sintatico na linha 3 (proximo ao aumento de recuo)
+    x = 1

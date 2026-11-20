@@ -1,0 +1,4 @@
+# L03 - Tabulacao na indentacao
+# ESPERADO: Erro lexico na linha 4: tabulacao nao permitida na indentacao
+lacrou real:
+	flash("um")

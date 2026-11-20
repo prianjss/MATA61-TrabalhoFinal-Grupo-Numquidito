@@ -1,0 +1,5 @@
+# V04 - Condicao com texto nao vazio
+lacrou "Diva":
+    flash("Verdadeiro")
+gag:
+    flash("Falso")

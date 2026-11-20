@@ -1,0 +1,3 @@
+# flash exige parenteses
+# ESPERADO: Erro sintatico na linha 3 (proximo a '1')
+flash 1

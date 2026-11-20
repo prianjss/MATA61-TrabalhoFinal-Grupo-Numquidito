@@ -1,0 +1,3 @@
+# Real malformado na ultima linha, sem quebra de linha
+# ESPERADO: Erro lexico na linha 3
+x = 5.

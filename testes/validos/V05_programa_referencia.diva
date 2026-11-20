@@ -1,0 +1,16 @@
+# V05 - Programa completo de referencia
+# Variaveis criadas na primeira atribuicao
+chart = 10
+streams = 100.5
+nome = "Diva"
+
+# Expressao aritmetica com os quatro operadores
+peak = (chart + 4) * (6 - 2) / 2
+
+lacrou peak > 20:
+    flash(nome, "chegou ao pico", peak)
+gag:
+    flash(nome, "ainda nao chegou ao pico")
+
+total = streams + peak
+flash("Total de streams:", total)

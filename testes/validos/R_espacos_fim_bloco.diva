@@ -1,0 +1,4 @@
+# Espacos sobrando no fim do arquivo, dentro de um bloco
+lacrou x:
+    flash(x)
+        

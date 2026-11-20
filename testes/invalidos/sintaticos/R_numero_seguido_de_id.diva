@@ -1,0 +1,3 @@
+# 9abc vira NUM_INT seguido de ID; o erro e sintatico
+# ESPERADO: Erro sintatico na linha 3 (proximo a 'abc')
+x = 9abc

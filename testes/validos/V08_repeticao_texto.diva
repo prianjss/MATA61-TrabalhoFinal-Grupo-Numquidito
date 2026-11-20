@@ -1,0 +1,2 @@
+# V08 - Repeticao de texto
+flash("la" * 3)

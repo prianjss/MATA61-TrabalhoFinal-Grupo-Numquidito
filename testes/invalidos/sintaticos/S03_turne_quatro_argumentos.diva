@@ -1,0 +1,4 @@
+# S03 - Mais de tres argumentos em turne
+# ESPERADO: Erro sintatico na linha 3 (proximo a ',')
+babado i na turne(1, 5, 1, 2):
+    flash(i)

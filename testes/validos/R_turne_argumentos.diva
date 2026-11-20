@@ -1,0 +1,7 @@
+# turne com um, dois e tres argumentos
+babado i na turne(5):
+    flash(i)
+babado i na turne(1, 5):
+    flash(i)
+babado i na turne(10, 0, -2):
+    flash(i)

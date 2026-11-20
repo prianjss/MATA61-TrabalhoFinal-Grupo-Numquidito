@@ -1,0 +1,6 @@
+# Tres niveis fechados de uma vez
+babado i na turne(3):
+    lacrou i > 0:
+        babado j na turne(i):
+            flash(i, j)
+flash("fim")

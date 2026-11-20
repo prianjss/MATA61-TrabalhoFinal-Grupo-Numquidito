@@ -1,0 +1,3 @@
+# Atribuicao sem expressao
+# ESPERADO: Erro sintatico na linha 3 (proximo ao fim da linha)
+x =

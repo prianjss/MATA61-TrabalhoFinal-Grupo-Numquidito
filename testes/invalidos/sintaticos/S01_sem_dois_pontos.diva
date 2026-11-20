@@ -1,0 +1,5 @@
+# S01 - Condicional sem dois-pontos (erro na linha do lacrou)
+# ESPERADO: Erro sintatico na linha 4 (proximo ao fim da linha)
+peak = 10
+lacrou peak > 5
+    flash("Peak")

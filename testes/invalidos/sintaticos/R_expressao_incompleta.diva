@@ -1,0 +1,5 @@
+# Expressao incompleta: o erro e na linha 4, nao na 5
+# ESPERADO: Erro sintatico na linha 4 (proximo ao fim da linha)
+x = 1
+y = x +
+z = 2

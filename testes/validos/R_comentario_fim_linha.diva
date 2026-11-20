@@ -1,0 +1,4 @@
+# Comentario no fim de uma linha de codigo
+x = 1  # comentario
+lacrou x:  # outro
+    flash(x)

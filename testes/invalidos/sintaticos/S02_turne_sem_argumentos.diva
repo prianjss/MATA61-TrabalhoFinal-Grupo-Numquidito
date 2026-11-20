@@ -1,0 +1,4 @@
+# S02 - turne sem argumentos
+# ESPERADO: Erro sintatico na linha 3 (proximo a ')')
+babado i na turne():
+    flash(i)

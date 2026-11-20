@@ -41,7 +41,7 @@ O analisador léxico e sintático reconhece os seguintes operadores e símbolos:
 
 * **Atribuição:** `=`
 * **Operadores Aritméticos:** Soma (`+`), Subtração (`-`), Multiplicação (`*`) e Divisão (`/`).
-* **Operadores Relacionais (para comparações em condições):** Igual (`==`), Diferente (`!=`), Maior que (`>`), Menor que (`<`), Maior ou igual (`>=`) e Menor ou igual (`<=`).
+* **Operadores Relacionais (para comparações em condições):** Igual (`==`), Diferente (`!=`), Maior que (`>`), Menor que (`<`), Maior ou igual (`>=`) e Menor ou igual (`<=`). Como na especificação (seção 4.2), não têm associatividade: comparações encadeadas como `1 < x < 5` são erro sintático.
 * **Delimitadores e Estrutura:** Parênteses `( )` para precedência e argumentos, dois-pontos `:` para iniciar blocos, vírgula `,` para separar itens, além de quebras de linha (`NEWLINE`) e controle de indentação (`INDENT` / `DEDENT`).
 
 ---
@@ -53,6 +53,21 @@ Durante o planejamento e evolução da especificação conceitual da DivaLang, a
 ### Por que decidimos reduzir o escopo?
 
 A especificação original contemplava múltiplos comandos complexos e redundantes (como laços `cunt` paralelos, controles de salto como `old` e `flope`, leitura de terminal `tea` e conversões de tipos estritas `hit` e `trah`). Manter esse conjunto completo geraria complexidade excessiva na Gramática Livre de Contexto (GLC), aumentando drasticamente o risco de conflitos de *shift/reduce* e *reduce/reduce* no Bison, além de comprometer o cumprimento do cronograma da disciplina.
+
+### O que ficou fora desta entrega
+
+Em relação à especificação da M1 (seções 2.1, 2.2 e 4.3), os itens abaixo **não** foram implementados nesta etapa:
+
+| Categoria | Itens da M1 | Como o analisador atual trata |
+|---|---|---|
+| Laço com condição | `cunt` (while) | lido como identificador; `cunt x < 3:` é erro sintático |
+| Controle de laço e bloco vazio | `old` (continue), `flope` (break), `passada` (pass) | lidos como identificadores; sozinhos na linha, são erro sintático |
+| Entrada e conversões | `tea` (input), `hit` (int), `trah` (float) | lidos como identificadores; chamadas como `hit(3.7)` são erro sintático |
+| Literais | `real`, `fake`, `nada` | lidos como identificadores comuns (ex.: `x = real` é aceito) |
+| Operadores lógicos | `e`, `ou`, `nao` e seus níveis de precedência (1 a 3 da seção 4.2) | lidos como identificadores; `a < b e c` é erro sintático |
+| Operadores aritméticos | `//` (divisão inteira) e `%` (resto) | `//` vira duas divisões seguidas (erro sintático); `%` é erro léxico |
+
+Consequência: como essas palavras não são reservadas nesta versão, elas podem ser usadas como nomes de variáveis (ex.: `cunt = 3` é aceito), ao contrário do que define a seção 2.1 da especificação. Os casos de teste da especificação que dependem desses recursos (V06, M03, M09–M11) não fazem parte da suíte desta entrega.
 
 ### O Escopo Otimizado
 
@@ -125,26 +140,59 @@ Dentro da pasta do projeto, execute os comandos abaixo na ordem:
    make
    ```
 
-   *(Nota: Podem aparecer dois avisos amarelos `warning: 'input' defined but not used` ou `yyunput`. Isso é um comportamento padrão do Flex e não impede o funcionamento).*
-3. **Executar o teste de referência oficial:**
+3. **Rodar o programa de exemplo:**
 
    ```bash
-   make test
+   make exemplo
    ```
 
    *Ou, se preferir rodar o executável manualmente passando qualquer arquivo `.diva`:*
 
    ```bash
-   ./divalang testes/exemplo_enxuto.diva
+   ./divalang testes/validos/exemplo_enxuto.diva
    ```
 
-Se tudo estiver correto, o `make test` roda o exemplo duas vezes — uma com finais de linha LF (Linux) e outra com uma cópia temporária em CRLF (Windows) — e mostra para cada uma:
+   Se tudo estiver correto, a mensagem abaixo aparecerá no seu terminal:
 
-```text
-Iniciando analise lexica e sintatica de 'testes/exemplo_enxuto.diva'...
-Sucesso! O programa DivaLang esta sintaticamente correto.
-```
+   ```text
+   Iniciando analise lexica e sintatica de 'testes/validos/exemplo_enxuto.diva'...
+   Sucesso! O programa DivaLang esta sintaticamente correto.
+   ```
+4. **Rodar a suíte de testes completa:**
+
+   ```bash
+   make test
+   ```
+
+   Ao final aparece um resumo como `120/120 verificacoes passaram`. Veja a seção 5.
 
 ### Observação: finais de linha (LF × CRLF)
 
 O Windows termina as linhas com `\r\n` (CRLF) e o Linux com `\n` (LF). O analisador léxico aceita os dois formatos, então arquivos `.diva` salvos em qualquer editor funcionam. Mesmo assim, o repositório possui um `.gitattributes` que mantém todos os arquivos de texto em LF, independente da configuração `core.autocrlf` de cada integrante — não é necessário configurar nada manualmente no Git.
+
+---
+
+## 5. Testes Automatizados
+
+A pasta `testes/` contém casos baseados na seção 6 da especificação (V, L, S e M) e casos de regressão próprios (prefixo `R_`):
+
+```text
+testes/
+  validos/                 programas que devem ser ACEITOS
+  invalidos/lexicos/       programas que devem falhar com erro léxico
+  invalidos/sintaticos/    programas que devem falhar com erro sintático
+  rodar_testes.sh          executor da suíte (chamado por `make test`)
+```
+
+* Cada arquivo inválido declara, na segunda linha, o erro esperado. O teste passa se o analisador rejeitar o programa **e** a mensagem contiver esse texto (incluindo o número da linha):
+
+  ```text
+  # L01 - Caractere invalido
+  # ESPERADO: Erro lexico na linha 3: caractere invalido ('@')
+  fama = 10 @ 2
+  ```
+* Todo caso roda duas vezes: com o arquivo original (LF) e com uma cópia convertida para CRLF (Windows).
+* Os casos `M01`–`M08` são **erros semânticos** da especificação. Como esta entrega não tem ações semânticas, eles são sintaticamente válidos e ficam em `validos/`. Na M3 devem passar a esperar o erro semântico.
+* Casos da especificação que usam recursos fora do escopo reduzido (`hit`, `old`, `real` etc. — V06, M03, M09–M11) não foram incluídos.
+
+**Para adicionar um teste**, basta criar um `.diva` na pasta correspondente; para inválidos, inclua a linha `# ESPERADO: <trecho da mensagem>`. Para conferir a mensagem real de um caso, rode `./divalang <arquivo>`.

@@ -1,0 +1,2 @@
+# V01 - Igualdade entre real e inteiro
+flash(5.0 == 5)

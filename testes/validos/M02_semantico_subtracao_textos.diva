@@ -1,0 +1,3 @@
+# Erro SEMANTICO (detectado so na M3): sintaticamente valido, aceito na M2
+resultado = "Diva" - "Lang"
+flash(resultado)

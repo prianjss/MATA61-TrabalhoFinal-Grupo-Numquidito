@@ -1,0 +1,4 @@
+# gag sem lacrou correspondente
+# ESPERADO: Erro sintatico na linha 3 (proximo a 'gag')
+gag:
+    flash(1)

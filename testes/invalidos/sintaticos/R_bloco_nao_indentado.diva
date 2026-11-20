@@ -1,0 +1,4 @@
+# Bloco apos dois-pontos sem recuo
+# ESPERADO: Erro sintatico na linha 4 (proximo a 'flash')
+lacrou x:
+flash(x)

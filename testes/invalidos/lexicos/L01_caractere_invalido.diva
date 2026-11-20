@@ -1,0 +1,3 @@
+# L01 - Caractere invalido
+# ESPERADO: Erro lexico na linha 3: caractere invalido ('@')
+fama = 10 @ 2

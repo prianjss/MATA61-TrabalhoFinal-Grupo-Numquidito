@@ -1,0 +1,3 @@
+# Tabulacao fora da indentacao
+# ESPERADO: Erro lexico na linha 3: caractere de tabulacao invalido
+x =	1

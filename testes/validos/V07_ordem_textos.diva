@@ -1,0 +1,2 @@
+# V07 - Comparacao de ordem entre textos
+flash("a" < "b")

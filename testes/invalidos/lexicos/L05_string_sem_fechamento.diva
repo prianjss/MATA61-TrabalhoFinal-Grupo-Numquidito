@@ -1,0 +1,3 @@
+# L05 - String sem aspas de fechamento
+# ESPERADO: Erro lexico na linha 3: string sem aspas de fechamento
+nome = "Diva

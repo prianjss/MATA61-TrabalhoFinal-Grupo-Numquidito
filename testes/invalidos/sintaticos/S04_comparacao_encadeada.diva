@@ -1,0 +1,5 @@
+# S04 - Comparacao encadeada (relacionais nao sao associativos)
+# ESPERADO: Erro sintatico na linha 4 (proximo a '<')
+x = 3
+lacrou 1 < x < 5:
+    flash(x)

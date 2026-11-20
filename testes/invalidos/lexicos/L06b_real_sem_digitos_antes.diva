@@ -1,0 +1,3 @@
+# L06 (caso B) - Real sem digitos antes do ponto
+# ESPERADO: Erro lexico na linha 3: numero decimal malformado (faltam digitos antes do ponto)
+x = .5

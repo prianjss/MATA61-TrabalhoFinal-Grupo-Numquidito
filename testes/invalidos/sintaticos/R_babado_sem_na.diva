@@ -1,0 +1,4 @@
+# babado sem a palavra na
+# ESPERADO: Erro sintatico na linha 3 (proximo a 'turne')
+babado i turne(3):
+    flash(i)
