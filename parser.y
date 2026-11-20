@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 extern int yylex();
-extern int yylineno;
+extern int token_line;
 extern char *yytext;
 void yyerror(const char *s);
 %}
@@ -16,7 +16,9 @@ void yyerror(const char *s);
 %token DELIM_ABRE_PAR DELIM_FECHA_PAR DELIM_DOIS_PONTOS DELIM_VIRGULA
 %token NEWLINE INDENT DEDENT
 
-%left OP_IGUAL OP_DIF OP_MAIOR OP_MENOR OP_MAIOR_IGUAL OP_MENOR_IGUAL
+/* Relacionais sem associatividade (especificacao 4.2): comparacoes
+   encadeadas como 1 < x < 5 sao erro sintatico. */
+%nonassoc OP_IGUAL OP_DIF OP_MAIOR OP_MENOR OP_MAIOR_IGUAL OP_MENOR_IGUAL
 %left OP_SOMA OP_SUB
 %left OP_MULT OP_DIV
 %right UMINUS
@@ -113,5 +115,23 @@ atomo
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Erro sintatico na linha %d (proximo a '%s'): %s\n", yylineno, yytext, s);
+    /* Tokens sem lexema visivel sao descritos pelo nome; os demais mostram
+       o texto lido. yychar e o token de lookahead em que o erro ocorreu. */
+    const char *descr = NULL;
+    switch (yychar) {
+        case NEWLINE: descr = "fim da linha"; break;
+        case INDENT:  descr = "aumento de recuo"; break;
+        case DEDENT:  descr = "fim de bloco (reducao de recuo)"; break;
+        case YYEOF:   descr = "fim do arquivo"; break;
+        case YYEMPTY: break;
+        default:
+            fprintf(stderr, "Erro sintatico na linha %d (proximo a '%s'): %s\n",
+                    token_line, yytext, s);
+            return;
+    }
+    if (descr)
+        fprintf(stderr, "Erro sintatico na linha %d (proximo ao %s): %s\n",
+                token_line, descr, s);
+    else
+        fprintf(stderr, "Erro sintatico na linha %d: %s\n", token_line, s);
 }

@@ -1,0 +1,6 @@
+# Forca finais de linha LF em todos os arquivos de texto, independente do
+# core.autocrlf de cada integrante. Necessario porque o projeto e compilado
+# no WSL/Linux a partir de uma pasta do Windows.
+* text=auto eol=lf
+
+*.pdf binary

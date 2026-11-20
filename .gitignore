@@ -1,0 +1,11 @@
+# Arquivos gerados pelo build (make)
+divalang
+divalang.exe
+lex.yy.c
+parser.tab.c
+parser.tab.h
+parser.output
+*.o
+
+# Arquivos temporarios do teste CRLF
+testes/*.crlf.tmp

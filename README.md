@@ -138,9 +138,13 @@ Dentro da pasta do projeto, execute os comandos abaixo na ordem:
    ./divalang testes/exemplo_enxuto.diva
    ```
 
-Se tudo estiver correto, a mensagem abaixo aparecerá no seu terminal:
+Se tudo estiver correto, o `make test` roda o exemplo duas vezes — uma com finais de linha LF (Linux) e outra com uma cópia temporária em CRLF (Windows) — e mostra para cada uma:
 
 ```text
 Iniciando analise lexica e sintatica de 'testes/exemplo_enxuto.diva'...
 Sucesso! O programa DivaLang esta sintaticamente correto.
 ```
+
+### Observação: finais de linha (LF × CRLF)
+
+O Windows termina as linhas com `\r\n` (CRLF) e o Linux com `\n` (LF). O analisador léxico aceita os dois formatos, então arquivos `.diva` salvos em qualquer editor funcionam. Mesmo assim, o repositório possui um `.gitattributes` que mantém todos os arquivos de texto em LF, independente da configuração `core.autocrlf` de cada integrante — não é necessário configurar nada manualmente no Git.
