@@ -9,8 +9,6 @@
 int indent_stack[MAX_INDENT];
 int indent_top = 0;
 int pending_dedents = 0;
-int at_line_start = 1;
-int eof_handled = 0;
 
 /* Linha em que o ultimo token reconhecido COMECA. O yylineno ja avanca ao
    consumir o '\n' do NEWLINE, o que fazia os erros sintaticos apontarem a
@@ -30,8 +28,6 @@ void init_lexer() {
     indent_stack[0] = 0;
     indent_top = 0;
     pending_dedents = 0;
-    at_line_start = 1;
-    eof_handled = 0;
 }
 
 /* Imprime o lexema escapando caracteres nao imprimiveis (ex.: '\r' vira \r),
@@ -85,8 +81,8 @@ NL          \r?\n
 %}
 
 <INITIAL>[ ]*#[^\r\n]*{NL} { /* Comentario */ }
-<INITIAL>[ ]*#[^\r\n]* { /* Comentario no EOF */ }
-<INITIAL>[ ]*{NL} { /* Linha em branco (LF ou CRLF) */ }
+<INITIAL>[ ]*#[^\r\n]*     { /* Comentario no EOF */ }
+<INITIAL>[ ]*{NL}          { /* Linha em branco (LF ou CRLF) */ }
 
 <INITIAL>[ \t]+ {
     for (int i = 0; yytext[i] != '\0'; i++) {
@@ -105,7 +101,6 @@ NL          \r?\n
     }
     unput(prox);
 
-    at_line_start = 0;
     BEGIN(NORMAL);
 
     int top_indent = indent_stack[indent_top];
@@ -139,7 +134,6 @@ NL          \r?\n
 }
 
 <INITIAL>. {
-    at_line_start = 0;
     BEGIN(NORMAL);
     if (indent_stack[indent_top] > 0) {
         while (indent_top > 0 && indent_stack[indent_top] > 0) {
@@ -162,20 +156,19 @@ NL          \r?\n
 <NORMAL>"turne"     { return KW_RANGE; }
 <NORMAL>"flash"     { return KW_PRINT; }
 
-<NORMAL>{DIGITO}+"."/[^0-9] {
+<NORMAL>{NUM_FLOAT} { return NUM_FLOAT; }
+<NORMAL>{DIGITO}+"." {
     lexical_error("numero decimal malformado (faltam digitos apos o ponto)", yytext);
 }
 <NORMAL>"."{DIGITO}+ {
     lexical_error("numero decimal malformado (faltam digitos antes do ponto)", yytext);
 }
-
-<NORMAL>{NUM_FLOAT} { return NUM_FLOAT; }
 <NORMAL>{NUM_INT}   { return NUM_INT; }
 
-<NORMAL>\"[^\"\n]*\" { return STRING; }
-<NORMAL>\'[^\'\n]*\' { return STRING; }
-<NORMAL>\"[^\"\n]*   { lexical_error("string sem aspas de fechamento", yytext); }
-<NORMAL>\'[^\'\n]*   { lexical_error("string sem aspas de fechamento", yytext); }
+<NORMAL>\"[^\"\r\n]*\" { return STRING; }
+<NORMAL>\'[^\'\r\n]*\' { return STRING; }
+<NORMAL>\"[^\"\r\n]*   { lexical_error("string sem aspas de fechamento", yytext); }
+<NORMAL>\'[^\'\r\n]*   { lexical_error("string sem aspas de fechamento", yytext); }
 
 <NORMAL>"=="        { return OP_IGUAL; }
 <NORMAL>"!="        { return OP_DIF; }
@@ -202,13 +195,11 @@ NL          \r?\n
 
 <NORMAL>{NL} {
     BEGIN(INITIAL);
-    at_line_start = 1;
     return NEWLINE;
 }
 
 <NORMAL><<EOF>> {
     BEGIN(INITIAL);
-    at_line_start = 1;
     return NEWLINE;
 }
 
