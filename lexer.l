@@ -9,18 +9,14 @@
 int indent_stack[MAX_INDENT];
 int indent_top = 0;
 int pending_dedents = 0;
-
-/* Linha em que o ultimo token reconhecido COMECA. O yylineno ja avanca ao
-   consumir o '\n' do NEWLINE, o que fazia os erros sintaticos apontarem a
-   linha seguinte; o parser usa token_line nas mensagens. */
 int token_line = 1;
 
-#define YY_USER_ACTION                                  \
-    {                                                   \
-        int nl_ = 0;                                    \
-        for (int i_ = 0; i_ < yyleng; i_++)             \
-            if (yytext[i_] == '\n') nl_++;              \
-        token_line = yylineno - nl_;                    \
+#define YY_USER_ACTION                             \
+    {                                              \
+        int nl = 0;                                \
+        for (int i = 0; i < yyleng; i++)           \
+            if (yytext[i] == '\n') nl++;           \
+        token_line = yylineno - nl;                \
     }
 
 void init_lexer() {
@@ -30,8 +26,6 @@ void init_lexer() {
     pending_dedents = 0;
 }
 
-/* Imprime o lexema escapando caracteres nao imprimiveis (ex.: '\r' vira \r),
-   para que nao corrompam a mensagem de erro no terminal. */
 static void print_escaped(FILE *out, const char *s) {
     for (const unsigned char *p = (const unsigned char *) s; *p; p++) {
         switch (*p) {
@@ -80,9 +74,9 @@ NL          \r?\n
     }
 %}
 
-<INITIAL>[ ]*#[^\r\n]*{NL} { /* Comentario */ }
-<INITIAL>[ ]*#[^\r\n]*     { /* Comentario no EOF */ }
-<INITIAL>[ ]*{NL}          { /* Linha em branco (LF ou CRLF) */ }
+<INITIAL>[ ]*#[^\r\n]*{NL} { ; }
+<INITIAL>[ ]*#[^\r\n]*     { ; }
+<INITIAL>[ ]*{NL}          { ; }
 
 <INITIAL>[ \t]+ {
     for (int i = 0; yytext[i] != '\0'; i++) {
@@ -90,10 +84,7 @@ NL          \r?\n
             lexical_error("tabulacao nao permitida na indentacao", NULL);
         }
     }
-    /* Ultima linha contendo apenas espacos, sem quebra de linha: e uma
-       linha em branco, nao deve gerar INDENT/DEDENT. Espia o proximo
-       caractere; se for o fim do arquivo, descarta o recuo.
-       (yyleng e lido antes, pois unput() pode alterar yytext.) */
+
     int current_indent = yyleng;
     int prox = input();
     if (prox == EOF || prox == 0) {
@@ -135,18 +126,17 @@ NL          \r?\n
 
 <INITIAL>. {
     BEGIN(NORMAL);
+    yyless(0);
     if (indent_stack[indent_top] > 0) {
         while (indent_top > 0 && indent_stack[indent_top] > 0) {
             indent_top--;
             pending_dedents++;
         }
-        yyless(0);
         if (pending_dedents > 0) {
             pending_dedents--;
             return DEDENT;
         }
     }
-    yyless(0);
 }
 
 <NORMAL>"lacrou"    { return KW_IF; }
@@ -190,8 +180,8 @@ NL          \r?\n
 
 <NORMAL>{ID}        { return ID; }
 
-<NORMAL>[ ]+        { /* descarta espacos */ }
-<NORMAL>#[^\r\n]*   { /* descarta comentario */ }
+<NORMAL>[ ]+        { ; }
+<NORMAL>#[^\r\n]*   { ; }
 
 <NORMAL>{NL} {
     BEGIN(INITIAL);
