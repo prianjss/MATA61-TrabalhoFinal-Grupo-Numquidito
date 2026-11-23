@@ -117,6 +117,8 @@ sudo apt update && sudo apt install -y build-essential flex bison make
 
 *(Se ele pedir a sua senha do Linux, digite-a e aperte Enter — os caracteres não aparecem na tela enquanto você digita por segurança).*
 
+> O projeto requer **Bison 3.6 ou superior** (confira com `bison --version`). As versões atuais do Ubuntu no WSL (22.04 e 24.04) já instalam a 3.8.
+
 ### Passo 3: Baixar e Entrar na Pasta do Projeto
 
 1. Certifique-se de que os arquivos do projeto estão na sua máquina.
@@ -192,6 +194,13 @@ testes/
   fama = 10 @ 2
   ```
 * Todo caso roda duas vezes: com o arquivo original (LF) e com uma cópia convertida para CRLF (Windows).
+* As mensagens de erro sintático informam também o que o analisador esperava encontrar (quando há até 6 opções), o que facilita corrigir o programa:
+
+  ```text
+  Erro sintatico na linha 3 (proximo a ')'): esperado identificador, numero inteiro, numero real, texto, '-' ou '('
+  ```
+
+  O `# ESPERADO:` dos testes pode conter só o início da mensagem (até o trecho entre parênteses).
 * Os casos `M01`–`M08` são **erros semânticos** da especificação. Como esta entrega não tem ações semânticas, eles são sintaticamente válidos e ficam em `validos/`. Na M3 devem passar a esperar o erro semântico.
 * Casos da especificação que usam recursos fora do escopo reduzido (`hit`, `old`, `real` etc. — V06, M03, M09–M11) não foram incluídos.
 
